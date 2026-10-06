@@ -1,14 +1,13 @@
+#!/bin/bash
 # 1. Atualizar o sistema (apt update + upgrade)
 # 2. Instalar ufw e fail2ban se não estiverem instalados
 # 3. Configurar ufw — liberar 22 e 80, ativar
 # 4. Garantir que fail2ban está rodando e habilitado no boot
 # 5. Imprimir relatório final do que foi feito
 
-#!/bin/bash
-
 update_system(){
-    sudo apt update
     sudo apt update -y
+    sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
     install_programs
 }
 
@@ -21,7 +20,7 @@ install_programs(){
 config_ufw_fail2ban(){
     sudo ufw allow 22
     sudo ufw allow 80
-    sudo ufw enable
+    sudo ufw --force enable
 
     sudo systemctl enable fail2ban
     sudo systemctl start fail2ban
